@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login - Resume Screening 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), 
+                        url('/static/images/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.95);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #00d2ff;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+        
+        .nav a:hover {
+            background: #00d2ff;
+            color: black;
+        }
+        
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-box {
+            background: rgba(20, 30, 45, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        .login-box h2 {
+            color: #00d2ff;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .login-box p {
+            color: #aaa;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00d2ff;
+            box-shadow: 0 0 20px rgba(0,210,255,0.3);
+        }
+        
+        .login-btn {
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        
+        .login-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,210,255,0.4);
+        }
+        
+        .demo-creds {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0,210,255,0.1);
+            border-radius: 12px;
+            border-left: 4px solid #00d2ff;
+        }
+        
+        .demo-creds h4 {
+            color: #00d2ff;
+            margin-bottom: 10px;
+        }
+        
+        .demo-creds p {
+            color: #ddd;
+            margin: 5px 0;
+            text-align: left;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .success {
+            background: rgba(72, 187, 120, 0.2);
+            border: 1px solid #48bb78;
+            color: #48bb78;
+        }
+        
+        .error {
+            background: rgba(245, 101, 101, 0.2);
+            border: 1px solid #f56565;
+            color: #f56565;
+        }
+        
+        .footer {
+            background: rgba(0,0,0,0.95);
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <h1>🔐 ADMIN PANEL 2026</h1>
+        </div>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/apply">Apply</a>
+            <a href="/admin">Admin</a>
+        </div>
+    </div>
+    
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <p>Enter your credentials to access the dashboard</p>
+            
+            <div class="form-group">
+                <label>👤 Username</label>
+                <input type="text" id="username" placeholder="Enter username" value="admin">
+            </div>
+            
+            <div class="form-group">
+                <label>🔑 Password</label>
+                <input type="password" id="password" placeholder="Enter password" value="admin123">
+            </div>
+            
+            <button class="login-btn" onclick="login()">
+                🚀 Login to Dashboard
+            </button>
+            
+            <div class="demo-creds">
+                <h4>📌 Demo Credentials:</h4>
+                <p><strong>Username:</strong> admin</p>
+                <p><strong>Password:</strong> admin123</p>
+            </div>
+            
+            <div id="messageBox" class="message"></div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2026 AI Resume Screening System - Admin Access Only</p>
+    </div>
+    
+    <script>
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageBox = document.getElementById('messageBox');
+            
+            messageBox.style.display = 'block';
+            messageBox.className = 'message';
+            messageBox.innerHTML = '⏳ Verifying credentials...';
+            
+            try {
+                const response = await fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageBox.className = 'message success';
+                    messageBox.innerHTML = '✅ ' + data.message + ' Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = '/admin/dashboard';
+                    }, 1500);
+                } else {
+                    messageBox.className = 'message error';
+                    messageBox.innerHTML = '❌ ' + data.message;
+                }
+            } catch (error) {
+                messageBox.className = 'message error';
+                messageBox.innerHTML = '❌ Login failed. Please try again.';
+            }
+        }
+        
+        // Enter key press
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>

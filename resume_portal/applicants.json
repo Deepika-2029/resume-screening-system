@@ -1,0 +1,86 @@
+[
+  {
+    "id": "20260213_023453",
+    "name": "Mohit Bhatt",
+    "email": "mohitnjatt1122@gmail.com",
+    "qualification": "B.Tech",
+    "company": "TCS",
+    "resume": "20260213_023453_resume (1).pdf",
+    "skills_found": [
+      "tf",
+      "python",
+      "java"
+    ],
+    "matched_skills": [
+      "java",
+      "python"
+    ],
+    "missing_skills": [
+      "sql",
+      "spring boot",
+      "aws",
+      "dsa",
+      "oops"
+    ],
+    "score": 22.22,
+    "status": "Rejected",
+    "applied_date": "2026-02-13 02:34:53",
+    "reviewed_date": "2026-02-13 04:13:09"
+  },
+  {
+    "id": "20260213_025130",
+    "name": "Mohit Bhatt",
+    "email": "mohitbhatt2030@gmail.com",
+    "qualification": "B.Tech",
+    "company": "Amazon",
+    "resume": "20260213_025130_resume (1).pdf",
+    "skills_found": [
+      "tf",
+      "python",
+      "java"
+    ],
+    "matched_skills": [
+      "java",
+      "python"
+    ],
+    "missing_skills": [
+      "c++",
+      "aws",
+      "distributed systems",
+      "dsa",
+      "system design"
+    ],
+    "score": 25.0,
+    "status": "Rejected",
+    "applied_date": "2026-02-13 02:51:31",
+    "reviewed_date": "2026-02-13 04:12:59"
+  },
+  {
+    "id": "20260213_041217",
+    "name": "Mohit Bhatt",
+    "email": "mohitbhatt2030@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "Amazon",
+    "resume": "20260213_041217_resume (1).pdf",
+    "skills_found": [
+      "tf",
+      "java",
+      "python"
+    ],
+    "matched_skills": [
+      "java",
+      "python"
+    ],
+    "missing_skills": [
+      "c++",
+      "aws",
+      "distributed systems",
+      "dsa",
+      "system design"
+    ],
+    "score": 25.0,
+    "status": "Rejected",
+    "applied_date": "2026-02-13 04:12:17",
+    "reviewed_date": "2026-02-13 04:13:06"
+  }
+]

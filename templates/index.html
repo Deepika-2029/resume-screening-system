@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Resume Screening 2026 - Top Companies</title>
+    <style>
+        /* ===== RESET & GLOBAL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                        url('/static/images/bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #00d2ff;
+            box-shadow: 0 5px 20px rgba(0,210,255,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        
+        .nav a:hover {
+            background: #00d2ff;
+            color: black;
+            box-shadow: 0 0 20px #00d2ff;
+        }
+        
+        .admin-btn {
+            background: rgba(255,107,107,0.2);
+            border: 1px solid #ff6b6b;
+        }
+        
+        /* ===== HERO SECTION ===== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffffff, #00d2ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 22px;
+            color: #ddd;
+            line-height: 1.6;
+        }
+        
+        .highlight {
+            color: #00d2ff;
+            font-weight: 700;
+        }
+        
+        /* ===== COMPANIES SECTION ===== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .section-title span {
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            padding: 5px 20px;
+            border-radius: 50px;
+            color: white;
+            font-size: 18px;
+            margin-left: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, #00d2ff, #a855f7);
+            border-radius: 2px;
+        }
+        
+        /* ===== BIG COMPANY CARDS ===== */
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 35px;
+            margin-top: 60px;
+        }
+        
+        .company-card {
+            background: rgba(20, 30, 45, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 35px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        .company-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.6s;
+        }
+        
+        .company-card:hover::before {
+            left: 100%;
+        }
+        
+        .company-card:hover {
+            transform: translateY(-15px);
+            border-color: #00d2ff;
+            box-shadow: 0 30px 50px rgba(0,210,255,0.3);
+            background: rgba(30, 40, 60, 0.98);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .company-logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 800;
+            color: white;
+            margin-right: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .company-info {
+            flex: 1;
+        }
+        
+        .company-name {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .batch-badge {
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .industry {
+            color: #aaa;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .salary-tag {
+            background: rgba(72, 187, 120, 0.2);
+            color: #48bb78;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 20px;
+            border: 1px solid #48bb78;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .role-tag {
+            background: rgba(0,210,255,0.15);
+            color: #00d2ff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 18px;
+            margin: 20px 0;
+            border-left: 4px solid #00d2ff;
+        }
+        
+        .skills-section {
+            margin: 25px 0;
+        }
+        
+        .skills-title {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .skill-tag {
+            background: rgba(0, 210, 255, 0.1);
+            color: #00d2ff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            border: 1px solid #00d2ff;
+            transition: 0.3s;
+        }
+        
+        .skill-tag:hover {
+            background: #00d2ff;
+            color: black;
+            transform: scale(1.05);
+        }
+        
+        .apply-btn {
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 20px rgba(0,210,255,0.3);
+        }
+        
+        .apply-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 30px rgba(0,210,255,0.5);
+        }
+        
+        /* ===== STATS SECTION ===== */
+        .stats-section {
+            background: rgba(0,0,0,0.8);
+            padding: 60px 20px;
+            margin-top: 80px;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 48px;
+            color: #00d2ff;
+            margin-bottom: 10px;
+        }
+        
+        .stat-item p {
+            font-size: 20px;
+            color: #ddd;
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(0,0,0,0.95);
+            text-align: center;
+            padding: 40px;
+            margin-top: 50px;
+            border-top: 1px solid #222;
+        }
+        
+        .footer p {
+            color: #888;
+            font-size: 18px;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .company-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 42px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            .nav {
+                margin-top: 20px;
+            }
+            
+            .nav a {
+                margin: 0 10px;
+                padding: 8px 16px;
+            }
+            
+            .company-logo {
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
+            }
+            
+            .company-name {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">
+            <h1>🎯 AI RESUME SCREENING 2026</h1>
+        </div>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/apply">Apply Now</a>
+            <a href="/admin" class="admin-btn">Admin Panel</a>
+        </div>
+    </div>
+    
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <h2>India's Top Tech Companies</h2>
+        <p>🚀 <span class="highlight">2026 Fresher Hiring</span> | AI-Powered Resume Matching | 90% Accuracy</p>
+        <p style="font-size: 20px; margin-top: 20px;">🏆 Google · Microsoft · Amazon · TCS · Infosys · Thoughtworks & more</p>
+    </div>
+    
+    <!-- COMPANIES SECTION -->
+    <div class="container">
+        <h1 class="section-title">
+            🔥 TOP 10 COMPANIES 2026 <span>HIRING NOW</span>
+        </h1>
+        
+        <div class="company-grid" id="companyGrid">
+            <!-- GOOGLE -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335);">
+                        G
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Google
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 AI/ML, Cloud, Search</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹30-80 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: Software Engineer, AI/ML Engineer
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">TensorFlow</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">System Design</span>
+                        <span class="skill-tag">DSA</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Google'">
+                    📄 APPLY NOW @ GOOGLE 2026
+                </button>
+            </div>
+            
+            <!-- MICROSOFT -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #00a4ef, #7fba00, #ffb900, #f25022);">
+                        MS
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Microsoft
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 Cloud, AI, Enterprise</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹30-80 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: SDE, Technology Consulting
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">C#</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Azure</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">.NET Core</span>
+                        <span class="skill-tag">System Design</span>
+                        <span class="skill-tag">DSA</span>
+                        <span class="skill-tag">Power BI</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Microsoft'">
+                    📄 APPLY NOW @ MICROSOFT 2026
+                </button>
+            </div>
+            
+            <!-- AMAZON -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #ff9900, #146eb4);">
+                        AMZ
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Amazon
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 E-commerce, Cloud</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹30-70 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: SDE, System Development Engineer
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Distributed Systems</span>
+                        <span class="skill-tag">DSA</span>
+                        <span class="skill-tag">System Design</span>
+                        <span class="skill-tag">OOPs</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Amazon'">
+                    📄 APPLY NOW @ AMAZON 2026
+                </button>
+            </div>
+            
+            <!-- TCS -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #004C8C, #00A5E3);">
+                        TCS
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            TCS
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 IT Services, Consulting</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹4-9 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: Ninja, Digital Freshers
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">Spring Boot</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">DSA</span>
+                        <span class="skill-tag">DBMS</span>
+                        <span class="skill-tag">OS</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=TCS'">
+                    📄 APPLY NOW @ TCS 2026
+                </button>
+            </div>
+            
+            <!-- INFOSYS -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #0078be, #231f20);">
+                        INFY
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Infosys
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 IT Services, Digital</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹6.25-21 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: Specialist Programmer, Digital Specialist
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Spring</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Azure</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">DSA</span>
+                        <span class="skill-tag">Cloud</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Infosys'">
+                    📄 APPLY NOW @ INFOSYS 2026
+                </button>
+            </div>
+            
+            <!-- THOUGHTWORKS -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #E44C42, #402E32);">
+                        TW
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Thoughtworks
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 Technology Consulting</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹12-25 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: Associate Graduate Developer
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">C#</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">TDD</span>
+                        <span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Microservices</span>
+                        <span class="skill-tag">Agile</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Thoughtworks'">
+                    📄 APPLY NOW @ THOUGHTWORKS 2026
+                </button>
+            </div>
+            
+            <!-- META -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #1877f2, #000000);">
+                        M
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Meta
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 Social Media, AI</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹35-85 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: Software Engineer, AI/ML
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">System Design</span>
+                        <span class="skill-tag">DSA</span>
+                        <span class="skill-tag">Distributed Systems</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Meta'">
+                    📄 APPLY NOW @ META 2026
+                </button>
+            </div>
+            
+            <!-- APPLE -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #555555, #000000);">
+                        APL
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Apple
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 Hardware, Software</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹35-75 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: Software Engineer, iOS Developer
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">Swift</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">iOS</span>
+                        <span class="skill-tag">macOS</span>
+                        <span class="skill-tag">System Design</span>
+                        <span class="skill-tag">DSA</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Apple'">
+                    📄 APPLY NOW @ APPLE 2026
+                </button>
+            </div>
+            
+            <!-- SALESFORCE -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #00a1e0, #032e61);">
+                        SF
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Salesforce
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 CRM, Cloud</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹20-45 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: Associate Technical Consultant
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">Apex</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">Cloud</span>
+                        <span class="skill-tag">Lightning</span>
+                        <span class="skill-tag">DSA</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Salesforce'">
+                    📄 APPLY NOW @ SALESFORCE 2026
+                </button>
+            </div>
+            
+            <!-- ADOBE -->
+            <div class="company-card">
+                <div class="card-header">
+                    <div class="company-logo" style="background: linear-gradient(135deg, #ff0000, #000000);">
+                        ADB
+                    </div>
+                    <div class="company-info">
+                        <div class="company-name">
+                            Adobe
+                            <span class="batch-badge">2026</span>
+                        </div>
+                        <div class="industry">
+                            <span>📍 Creative Software</span>
+                        </div>
+                        <div class="salary-tag">
+                            ₹25-50 LPA
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="role-tag">
+                    🎯 Hiring: Software Engineer
+                </div>
+                
+                <div class="skills-section">
+                    <div class="skills-title">⚡ Required Skills 2026:</div>
+                    <div class="skills">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Cloud</span>
+                        <span class="skill-tag">DSA</span>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" onclick="location.href='/apply?company=Adobe'">
+                    📄 APPLY NOW @ ADOBE 2026
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- STATS SECTION -->
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>10+</h3>
+                <p>Top Companies</p>
+            </div>
+            <div class="stat-item">
+                <h3>2026</h3>
+                <p>Batch Hiring</p>
+            </div>
+            <div class="stat-item">
+                <h3>95%</h3>
+                <p>Match Accuracy</p>
+            </div>
+            <div class="stat-item">
+                <h3>₹85L</h3>
+                <p>Highest Package</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>© 2026 AI Resume Screening System | Top 10 Tech Companies Hiring</p>
+        <p style="margin-top: 15px; color: #666;">Google · Microsoft · Amazon · TCS · Infosys · Thoughtworks · Meta · Apple · Salesforce · Adobe</p>
+    </div>
+    
+    <script>
+        // Company data for apply buttons
+        const companies = [
+            'Google', 'Microsoft', 'Amazon', 'TCS', 'Infosys', 
+            'Thoughtworks', 'Meta', 'Apple', 'Salesforce', 'Adobe'
+        ];
+        
+        // Confirm before apply
+        document.querySelectorAll('.apply-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const company = this.textContent.split('@')[1]?.split('2026')[0]?.trim() || 'Company';
+                console.log(`Applying to: ${company}`);
+            });
+        });
+    </script>
+</body>
+</html>

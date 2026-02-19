@@ -1,0 +1,86 @@
+[
+  {
+    "id": "20260215_145626",
+    "name": "Mohit Bhatt",
+    "email": "mohitbhatt2030@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "TCS",
+    "resume": "20260215_145626_resume (1).pdf",
+    "skills_found": [
+      "java",
+      "tf",
+      "python"
+    ],
+    "matched_skills": [
+      "java",
+      "python"
+    ],
+    "missing_skills": [
+      "sql",
+      "spring boot",
+      "aws",
+      "dsa",
+      "oops"
+    ],
+    "score": 22.22,
+    "status": "Rejected",
+    "applied_date": "2026-02-15 14:56:26",
+    "reviewed_date": "2026-02-15 14:57:11"
+  },
+  {
+    "id": "20260217_125003",
+    "name": "Mohit Bhatt",
+    "email": "mohitbhatt2030@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "TCS",
+    "resume": "20260217_125003_resume (1).pdf",
+    "skills_found": [
+      "python",
+      "java",
+      "tf"
+    ],
+    "matched_skills": [
+      "java",
+      "python"
+    ],
+    "missing_skills": [
+      "sql",
+      "spring boot",
+      "aws",
+      "dsa",
+      "oops"
+    ],
+    "score": 22.22,
+    "status": "Rejected",
+    "applied_date": "2026-02-17 12:50:03",
+    "reviewed_date": "2026-02-17 12:50:43"
+  },
+  {
+    "id": "20260220_001558",
+    "name": "Mohit Bhatt",
+    "email": "mohitbhatt2030@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "Google",
+    "resume": "20260220_001558_resume (1).pdf",
+    "skills_found": [
+      "java",
+      "tf",
+      "python"
+    ],
+    "matched_skills": [
+      "python",
+      "java"
+    ],
+    "missing_skills": [
+      "c++",
+      "tensorflow",
+      "pytorch",
+      "kubernetes",
+      "system design"
+    ],
+    "score": 22.22,
+    "status": "Shortlisted",
+    "applied_date": "2026-02-20 00:15:58",
+    "reviewed_date": "2026-02-20 00:18:14"
+  }
+]
