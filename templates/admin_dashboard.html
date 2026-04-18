@@ -506,7 +506,7 @@
             setTimeout(() => t.remove(), 4000);
         }
 
-        // ===== TIMEOUT-SAFE FETCH (Render free tier ke liye) =====
+        // ===== TIMEOUT-SAFE FETCH with JSON check =====
         async function fetchSafe(url, opts = {}, ms = 20000) {
             const ctrl = new AbortController();
             const t = setTimeout(() => ctrl.abort(), ms);
@@ -515,6 +515,17 @@
                 clearTimeout(t);
                 return r;
             } catch(e) { clearTimeout(t); throw e; }
+        }
+
+        // JSON parse karo safely — agar HTML mila to session expired
+        async function safeJSON(res) {
+            const ct = res.headers.get('content-type') || '';
+            if (!ct.includes('application/json')) {
+                // Server ne HTML bheja = session expire ya login redirect
+                window.location.href = '/admin';
+                return null;
+            }
+            return await res.json();
         }
 
         function spinnerHTML(msg) {
@@ -532,7 +543,8 @@
             try {
                 const res = await fetchSafe('/api/admin/stats', {}, 25000);
                 if (res.status === 401) { window.location.href='/admin'; return; }
-                let stats = await res.json();
+                let stats = await safeJSON(res);
+                if (!stats) return; // session expired, redirect ho gaya
                 if (stats.error) {
                     document.getElementById('companyStats').innerHTML =
                         `<div style="text-align:center;padding:30px;color:#f56565;grid-column:1/-1;">
@@ -593,7 +605,8 @@
             try {
                 const res = await fetchSafe(url, {}, 15000);
                 if (res.status === 401) { window.location.href='/admin'; return; }
-                let apps = await res.json();
+                let apps = await safeJSON(res);
+                if (!apps) return; // session expired
                 let rows = '';
                 if (!Array.isArray(apps) || !apps.length) {
                     let filterActive = company || status || (min && min!='0');
