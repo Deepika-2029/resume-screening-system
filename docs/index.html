@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Screening System 2026 - Redirecting...</title>
+    <!-- Auto redirect to live Render site -->
+    <meta http-equiv="refresh" content="3; url=https://resume-screening-systemgunicorn-app-app.onrender.com">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0a0a1a 0%, #0d1b2a 50%, #0a0a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(0, 210, 255, 0.2);
+            border-top-color: #00d2ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .redirect-btn {
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            color: white;
+            text-decoration: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            display: inline-block;
+            transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+        }
+
+        .redirect-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.5);
+        }
+
+        .countdown {
+            font-size: 16px;
+            color: #00d2ff;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">🎯</div>
+    <h1>AI Resume Screening System 2026</h1>
+    <p>Aapko live website pe le ja rahe hain...</p>
+    <div class="spinner"></div>
+    <a href="https://resume-screening-systemgunicorn-app-app.onrender.com" class="redirect-btn">
+        🚀 Live Site Pe Jao
+    </a>
+    <p class="countdown" id="countdown">3 second mein redirect ho jaoge...</p>
+
+    <script>
+        let count = 3;
+        const el = document.getElementById('countdown');
+        const timer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                el.textContent = count + ' second mein redirect ho jaoge...';
+            } else {
+                el.textContent = 'Redirect ho raha hai...';
+                clearInterval(timer);
+                window.location.href = 'https://resume-screening-systemgunicorn-app-app.onrender.com';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

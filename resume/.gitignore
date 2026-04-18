@@ -1,0 +1,31 @@
+# Environment variables (KABHI upload mat karo!)
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Uploaded resumes (ye data hai, code nahi)
+static/uploads/*.pdf
+static/uploads/*.doc
+static/uploads/*.docx
+
+# Temp files
+tempCodeRunnerFile.py
+*.tmp
+
+# Database files (optional - agar fresh start chahte ho to uncomment karo)
+# applicants.json
+# companies.json
+
+# OS files
+.DS_Store
+Thumbs.db

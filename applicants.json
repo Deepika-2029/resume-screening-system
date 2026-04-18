@@ -1,33 +1,5 @@
 [
   {
-    "id": "20260215_145626",
-    "name": "Mohit Bhatt",
-    "email": "mohitbhatt2030@gmail.com",
-    "qualification": "Diploma in IT",
-    "company": "TCS",
-    "resume": "20260215_145626_resume (1).pdf",
-    "skills_found": [
-      "java",
-      "tf",
-      "python"
-    ],
-    "matched_skills": [
-      "java",
-      "python"
-    ],
-    "missing_skills": [
-      "sql",
-      "spring boot",
-      "aws",
-      "dsa",
-      "oops"
-    ],
-    "score": 22.22,
-    "status": "Rejected",
-    "applied_date": "2026-02-15 14:56:26",
-    "reviewed_date": "2026-02-15 14:57:11"
-  },
-  {
     "id": "20260217_125003",
     "name": "Mohit Bhatt",
     "email": "mohitbhatt2030@gmail.com",
@@ -82,5 +54,237 @@
     "status": "Shortlisted",
     "applied_date": "2026-02-20 00:15:58",
     "reviewed_date": "2026-02-20 00:18:14"
+  },
+  {
+    "id": "20260220_120742",
+    "name": "puneet ",
+    "email": "puneetb177@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "Amazon",
+    "resume": "20260220_120742_puneet.pdf",
+    "skills_found": [],
+    "matched_skills": [],
+    "missing_skills": [
+      "java",
+      "c++",
+      "python",
+      "aws",
+      "distributed systems"
+    ],
+    "score": 0.0,
+    "status": "Shortlisted",
+    "applied_date": "2026-02-20 12:07:42",
+    "reviewed_date": "2026-04-01 10:39:23"
+  },
+  {
+    "id": "20260309_205635",
+    "name": "joshi ",
+    "email": "joshi@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "Meta",
+    "resume": "20260309_205635_mohit new resume .pdf",
+    "skills_found": [
+      "python",
+      "node",
+      "javascript",
+      "java"
+    ],
+    "matched_skills": [
+      "python"
+    ],
+    "missing_skills": [
+      "c++",
+      "react",
+      "pytorch",
+      "system design",
+      "dsa"
+    ],
+    "score": 14.29,
+    "status": "Rejected",
+    "applied_date": "2026-03-09 20:56:36",
+    "reviewed_date": "2026-03-09 20:58:03"
+  },
+  {
+    "id": "20260310_150110",
+    "name": "jeena",
+    "email": "jeena@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "Amazon",
+    "resume": "20260310_150110_resume new.pdf",
+    "skills_found": [
+      "python",
+      "sql",
+      "java",
+      "javascript",
+      "mysql"
+    ],
+    "matched_skills": [
+      "java",
+      "python"
+    ],
+    "missing_skills": [
+      "c++",
+      "aws",
+      "distributed systems",
+      "dsa",
+      "system design"
+    ],
+    "score": 25.0,
+    "status": "Shortlisted",
+    "applied_date": "2026-03-10 15:01:10",
+    "reviewed_date": "2026-03-10 15:02:16"
+  },
+  {
+    "id": "20260401_071013",
+    "name": "Mohit Bhatt",
+    "email": "mohitbhatt2030@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "TCS",
+    "resume": "20260401_071013_resume new.pdf",
+    "skills_found": [],
+    "matched_skills": [],
+    "missing_skills": [
+      "java",
+      "python",
+      "sql",
+      "spring boot",
+      "aws"
+    ],
+    "score": 0.0,
+    "status": "Shortlisted",
+    "applied_date": "2026-04-01 07:10:14",
+    "reviewed_date": "2026-04-01 10:39:53"
+  },
+  {
+    "id": "20260401_071721",
+    "name": "puneet",
+    "email": "puneetb177@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "Microsoft",
+    "resume": "20260401_071721_puneet resume Demo.pdf",
+    "skills_found": [
+      "ci/cd",
+      "javascript",
+      "docker",
+      "java",
+      "devops",
+      "container",
+      "js",
+      "tf",
+      "python",
+      "c++",
+      "torch",
+      "tensorflow",
+      "react",
+      "spring",
+      "kubernetes"
+    ],
+    "matched_skills": [
+      "python",
+      "sql"
+    ],
+    "missing_skills": [
+      "c#",
+      "azure",
+      "power bi",
+      ".net core",
+      "system design"
+    ],
+    "score": 22.22,
+    "status": "Rejected",
+    "applied_date": "2026-04-01 07:17:22",
+    "reviewed_date": "2026-04-01 07:19:17"
+  },
+  {
+    "id": "20260401_103728",
+    "name": "manish joshi ",
+    "email": "manishjoshi.it2007@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "Amazon",
+    "resume": "20260401_103728_resume (1).pdf",
+    "skills_found": [
+      "python"
+    ],
+    "matched_skills": [
+      "python"
+    ],
+    "missing_skills": [
+      "java",
+      "c++",
+      "aws",
+      "distributed systems",
+      "dsa"
+    ],
+    "score": 12.5,
+    "status": "Selected",
+    "applied_date": "2026-04-01 10:37:28",
+    "reviewed_date": "2026-04-01 11:25:12"
+  },
+  {
+    "id": "20260401_120801",
+    "name": "Mohit Bhatt",
+    "email": "mohitbhatt2030@gmail.com",
+    "qualification": "Diploma in IT",
+    "company": "TCS",
+    "resume": "20260401_120801_mohit new resume .pdf",
+    "skills_found": [
+      "java",
+      "node",
+      "python",
+      "javascript"
+    ],
+    "matched_skills": [
+      "java",
+      "python"
+    ],
+    "missing_skills": [
+      "sql",
+      "spring boot",
+      "aws",
+      "dsa",
+      "oops"
+    ],
+    "score": 22.22,
+    "status": "Selected",
+    "applied_date": "2026-04-01 12:08:01",
+    "reviewed_date": "2026-04-01 12:08:40"
+  },
+  {
+    "id": "20260401_125051",
+    "name": "123",
+    "email": "mohitbhatt2030@gmail.com",
+    "qualification": "B.Tech",
+    "company": "Microsoft",
+    "resume": "20260401_125051_resume[1].pdf",
+    "skills_found": [
+      "django",
+      "hibernate",
+      "postgresql",
+      "distributed",
+      "java",
+      "database",
+      "js",
+      "c++",
+      "sql",
+      "spring",
+      "oracle",
+      "angular",
+      "python",
+      "mysql"
+    ],
+    "matched_skills": [
+      "python",
+      "sql"
+    ],
+    "missing_skills": [
+      "c#",
+      "azure",
+      "power bi",
+      ".net core",
+      "system design"
+    ],
+    "score": 22.22,
+    "status": "Pending",
+    "applied_date": "2026-04-01 12:50:51"
   }
 ]

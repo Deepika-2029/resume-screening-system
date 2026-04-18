@@ -291,6 +291,25 @@
             background: #9b2c2c;
             transform: scale(1.05);
         }
+
+        /* ===== VIEW RESUME BUTTON ===== */
+        .view-resume-btn {
+            background: linear-gradient(135deg, #a855f7, #7c3aed);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .view-resume-btn:hover {
+            background: linear-gradient(135deg, #9333ea, #6d28d9);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(168,85,247,0.4);
+        }
         
         .top10-btn {
             background: #00d2ff;
@@ -450,6 +469,7 @@
                         <tr>
                             <th>Rank</th>
                             <th>Name</th>
+                            <th>📧 Email</th>
                             <th>Qualification</th>
                             <th>Company</th>
                             <th>Score</th>
@@ -460,7 +480,7 @@
                         </tr>
                     </thead>
                     <tbody id="applicantsBody">
-                        <tr><td colspan="9" style="text-align:center;">⏳ Loading...</td></tr>
+                        <tr><td colspan="11" style="text-align:center;">⏳ Loading...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -526,7 +546,7 @@
                 let apps = await (await fetch(url)).json();
                 let rows = '';
                 if (!apps.length) {
-                    rows = '<tr><td colspan="9" style="text-align:center;">📌 No applicants</td></tr>';
+                    rows = '<tr><td colspan="11" style="text-align:center;">📌 No applicants found</td></tr>';
                 } else {
                     apps.forEach((app, idx) => {
                         let statusClass = {
@@ -537,6 +557,7 @@
                         rows += `<tr>
                             <td><strong>#${idx+1}</strong></td>
                             <td>${app.name}</td>
+                            <td><a href="mailto:${app.email}" style="color:#00d2ff; text-decoration:none;" title="Send Email">📧 ${app.email || 'N/A'}</a></td>
                             <td><span style="background:rgba(0,210,255,0.2); padding:6px 12px; border-radius:20px;">${app.qualification || 'N/A'}</span></td>
                             <td>${app.company}</td>
                             <td><span class="score-badge">${app.score}%</span></td>
@@ -548,7 +569,7 @@
                                     <button class="shortlist-btn" onclick="updateStatus('${app.id}','Shortlisted')">✅ Shortlist</button>
                                     <button class="select-btn" onclick="updateStatus('${app.id}','Selected')">🎯 Select</button>
                                     <button class="reject-btn" onclick="updateStatus('${app.id}','Rejected')">❌ Reject</button>
-                                    <!-- ===== NEW DELETE BUTTON ===== -->
+                                    <button class="view-resume-btn" onclick="viewResume('${app.resume}','${app.name}')">📄 Resume</button>
                                     <button class="delete-btn" onclick="deleteApplicant('${app.id}')">🗑️ Delete</button>
                                 </div>
                             </td>
@@ -557,7 +578,7 @@
                 }
                 document.getElementById('applicantsBody').innerHTML = rows;
             } catch(e) {
-                document.getElementById('applicantsBody').innerHTML = '<tr><td colspan="9" style="color:red;">❌ Error</td></tr>';
+                document.getElementById('applicantsBody').innerHTML = '<tr><td colspan="11" style="color:red;">❌ Error loading data</td></tr>';
             }
         }
 
@@ -575,6 +596,16 @@
             } catch(e) {
                 showToast('❌ Update failed', true);
             }
+        }
+
+        // ===== VIEW RESUME FUNCTION =====
+        function viewResume(resumeFile, applicantName) {
+            if (!resumeFile) {
+                showToast('❌ No resume uploaded', true);
+                return;
+            }
+            let url = '/static/uploads/' + resumeFile;
+            window.open(url, '_blank');
         }
 
         // ===== NEW DELETE FUNCTION =====

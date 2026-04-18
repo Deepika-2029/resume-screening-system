@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - Resume Screening 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0,0,0,0.95), rgba(0,0,0,0.95)), 
+                        url('/static/images/bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.98);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #00d2ff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            background: linear-gradient(45deg, #00d2ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+        
+        .nav a:hover {
+            background: #00d2ff;
+            color: black;
+        }
+        
+        .logout-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(30, 40, 60, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            border-left: 6px solid #00d2ff;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card h3 {
+            color: #aaa;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .number {
+            font-size: 42px;
+            font-weight: 800;
+            color: #00d2ff;
+            margin-bottom: 5px;
+        }
+        
+        /* Company Cards */
+        .company-section {
+            background: rgba(20, 30, 45, 0.8);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .company-stat-card {
+            background: rgba(40, 50, 70, 0.8);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        
+        .company-stat-card:hover {
+            border-color: #00d2ff;
+            box-shadow: 0 5px 20px rgba(0,210,255,0.2);
+        }
+        
+        .company-stat-card h4 {
+            color: #00d2ff;
+            font-size: 22px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+        
+        /* Export Button Style */
+        .export-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        
+        .export-btn:hover {
+            background: #38a169;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(72,187,120,0.3);
+        }
+        
+        /* Applicants Table */
+        .applicants-section {
+            background: rgba(20, 30, 45, 0.8);
+            border-radius: 30px;
+            padding: 30px;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-size: 15px;
+            min-width: 200px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(40, 50, 70, 0.5);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        th {
+            background: rgba(0,210,255,0.3);
+            color: white;
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        td {
+            padding: 16px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        
+        .score-badge {
+            background: #48bb78;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .status-pending { background: #f6ad55; color: black; }
+        .status-shortlisted { background: #4299e1; color: white; }
+        .status-selected { background: #48bb78; color: white; }
+        .status-rejected { background: #f56565; color: white; }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .shortlist-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .select-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .reject-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        /* ===== NEW DELETE BUTTON STYLE ===== */
+        .delete-btn {
+            background: #c53030;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+        
+        .delete-btn:hover {
+            background: #9b2c2c;
+            transform: scale(1.05);
+        }
+        
+        .top10-btn {
+            background: #00d2ff;
+            color: black;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: rgba(20, 30, 45, 0.98);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 1000px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #00d2ff;
+        }
+        
+        .close-btn {
+            float: right;
+            font-size: 30px;
+            cursor: pointer;
+            color: #ff6b6b;
+        }
+        
+        .toast-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            z-index: 9999;
+            font-weight: bold;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .toast-error {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <h1>📊 ADMIN DASHBOARD 2026</h1>
+        </div>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/apply">Apply</a>
+            <span>Welcome, admin</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsCards">
+            <div class="stat-card">
+                <h3>📌 TOTAL APPLICATIONS</h3>
+                <div class="number" id="totalApps">0</div>
+                <p>Across all companies</p>
+            </div>
+            <div class="stat-card">
+                <h3>🏢 ACTIVE COMPANIES</h3>
+                <div class="number" id="totalCompanies">10</div>
+                <p>Hiring for 2026</p>
+            </div>
+            <div class="stat-card">
+                <h3>⏳ PENDING REVIEW</h3>
+                <div class="number" id="pendingApps">0</div>
+                <p>Need attention</p>
+            </div>
+            <div class="stat-card">
+                <h3>📊 AVERAGE SCORE</h3>
+                <div class="number" id="avgScore">0%</div>
+                <p>Overall match rate</p>
+            </div>
+        </div>
+
+        <!-- Company Stats -->
+        <div class="company-section">
+            <h2>🏢 Company Wise Statistics</h2>
+            <div class="company-grid" id="companyStats"></div>
+        </div>
+
+        <!-- Applicants Table -->
+        <div class="applicants-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2>📋 All Applicants</h2>
+                <button class="export-btn" onclick="exportAllCompanies()" style="width: auto; padding: 12px 30px;">
+                    📥 Export All CSV
+                </button>
+            </div>
+
+            <div class="filters">
+                <select class="filter-select" id="companyFilter" onchange="loadApplicants()">
+                    <option value="">🏢 All Companies</option>
+                    <option value="Google">Google</option>
+                    <option value="Microsoft">Microsoft</option>
+                    <option value="Amazon">Amazon</option>
+                    <option value="TCS">TCS</option>
+                    <option value="Infosys">Infosys</option>
+                    <option value="Thoughtworks">Thoughtworks</option>
+                    <option value="Meta">Meta</option>
+                    <option value="Apple">Apple</option>
+                    <option value="Salesforce">Salesforce</option>
+                    <option value="Adobe">Adobe</option>
+                </select>
+                
+                <select class="filter-select" id="statusFilter" onchange="loadApplicants()">
+                    <option value="">📌 All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Shortlisted">Shortlisted</option>
+                    <option value="Selected">Selected</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+                
+                <select class="filter-select" id="scoreFilter" onchange="loadApplicants()">
+                    <option value="0">⭐ All Scores</option>
+                    <option value="80">80%+</option>
+                    <option value="70">70%+</option>
+                    <option value="60">60%+</option>
+                    <option value="50">50%+</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table id="applicantsTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Qualification</th>
+                            <th>Company</th>
+                            <th>Score</th>
+                            <th>Matched Skills</th>
+                            <th>Status</th>
+                            <th>Applied Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="applicantsBody">
+                        <tr><td colspan="9" style="text-align:center;">⏳ Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top 10 Modal -->
+    <div id="top10Modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalCompanyName" style="color:#00d2ff;">Top 10 Candidates</h2>
+            <div id="top10Content"></div>
+        </div>
+    </div>
+
+    <script>
+        function showToast(msg, isErr = false) {
+            let t = document.createElement('div');
+            t.className = 'toast-message' + (isErr ? ' toast-error' : '');
+            t.innerText = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        async function loadDashboard() {
+            try {
+                let stats = await (await fetch('/api/admin/stats')).json();
+                document.getElementById('totalApps').innerText = stats.total_applications || 0;
+                document.getElementById('totalCompanies').innerText = stats.total_companies || 10;
+                document.getElementById('pendingApps').innerText = stats.pending_review || 0;
+                document.getElementById('avgScore').innerText = (stats.avg_score || 0) + '%';
+
+                let companies = ['Google','Microsoft','Amazon','TCS','Infosys','Thoughtworks','Meta','Apple','Salesforce','Adobe'];
+                let html = '';
+                companies.forEach(c => {
+                    let cs = stats.company_wise?.[c] || { total:0, avg_score:0, top_score:0 };
+                    html += `<div class="company-stat-card">
+                        <h4>${c}</h4>
+                        <div><span>📄 Apps:</span> <span style="color:#00d2ff;">${cs.total}</span></div>
+                        <div><span>📊 Avg:</span> <span style="color:#48bb78;">${cs.avg_score}%</span></div>
+                        <div><span>🏆 Top:</span> <span style="color:#ffd700;">${cs.top_score}%</span></div>
+                        <button class="top10-btn" onclick="showTop10('${c}')">👁️ View Top 10</button>
+                        <button class="export-btn" onclick="exportCompany('${c}')">📥 Export CSV</button>
+                    </div>`;
+                });
+                document.getElementById('companyStats').innerHTML = html;
+                loadApplicants();
+            } catch(e) {
+                showToast('❌ Error loading dashboard', true);
+            }
+        }
+
+        async function loadApplicants() {
+            let company = document.getElementById('companyFilter').value;
+            let status = document.getElementById('statusFilter').value;
+            let min = document.getElementById('scoreFilter').value;
+            let url = '/api/admin/applicants?';
+            if (company) url += `company=${company}&`;
+            if (status) url += `status=${status}&`;
+            if (min && min != '0') url += `min_score=${min}`;
+
+            try {
+                let apps = await (await fetch(url)).json();
+                let rows = '';
+                if (!apps.length) {
+                    rows = '<tr><td colspan="9" style="text-align:center;">📌 No applicants</td></tr>';
+                } else {
+                    apps.forEach((app, idx) => {
+                        let statusClass = {
+                            Pending:'status-pending', Shortlisted:'status-shortlisted',
+                            Selected:'status-selected', Rejected:'status-rejected'
+                        }[app.status] || 'status-pending';
+
+                        rows += `<tr>
+                            <td><strong>#${idx+1}</strong></td>
+                            <td>${app.name}</td>
+                            <td><span style="background:rgba(0,210,255,0.2); padding:6px 12px; border-radius:20px;">${app.qualification || 'N/A'}</span></td>
+                            <td>${app.company}</td>
+                            <td><span class="score-badge">${app.score}%</span></td>
+                            <td>${(app.matched_skills || []).slice(0,3).join(', ')}</td>
+                            <td><span class="status-badge ${statusClass}">${app.status || 'Pending'}</span></td>
+                            <td>${app.applied_date || 'N/A'}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="shortlist-btn" onclick="updateStatus('${app.id}','Shortlisted')">✅ Shortlist</button>
+                                    <button class="select-btn" onclick="updateStatus('${app.id}','Selected')">🎯 Select</button>
+                                    <button class="reject-btn" onclick="updateStatus('${app.id}','Rejected')">❌ Reject</button>
+                                    <!-- ===== NEW DELETE BUTTON ===== -->
+                                    <button class="delete-btn" onclick="deleteApplicant('${app.id}')">🗑️ Delete</button>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                }
+                document.getElementById('applicantsBody').innerHTML = rows;
+            } catch(e) {
+                document.getElementById('applicantsBody').innerHTML = '<tr><td colspan="9" style="color:red;">❌ Error</td></tr>';
+            }
+        }
+
+        async function updateStatus(id, status) {
+            try {
+                let res = await (await fetch('/api/admin/update_status', {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({id, status})
+                })).json();
+                if (res.success) {
+                    showToast(`✅ Status → ${status}`);
+                    loadDashboard();
+                }
+            } catch(e) {
+                showToast('❌ Update failed', true);
+            }
+        }
+
+        // ===== NEW DELETE FUNCTION =====
+        async function deleteApplicant(id) {
+            if (!confirm('🗑️ Permanently delete this applicant?')) return;
+            try {
+                let res = await (await fetch('/api/admin/delete_applicant', {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({id})
+                })).json();
+                if (res.success) {
+                    showToast('🗑️ Applicant deleted');
+                    loadDashboard();
+                } else {
+                    showToast('❌ Delete failed', true);
+                }
+            } catch(e) {
+                showToast('❌ Delete error', true);
+            }
+        }
+
+        async function showTop10(company) {
+            let apps = await (await fetch(`/api/admin/top10/${company}`)).json();
+            if (!apps.length) return showToast(`📌 No apps for ${company}`, true);
+            document.getElementById('modalCompanyName').innerText = `🏆 Top 10 - ${company}`;
+            let rows = '';
+            apps.forEach((app,i) => {
+                rows += `<tr>
+                    <td>#${i+1}</td>
+                    <td>${app.name}</td>
+                    <td>${app.qualification || 'N/A'}</td>
+                    <td><span class="score-badge">${app.score}%</span></td>
+                    <td>${(app.matched_skills || []).slice(0,4).join(', ')}</td>
+                    <td><span class="status-badge status-${(app.status||'Pending').toLowerCase()}">${app.status||'Pending'}</span></td>
+                </tr>`;
+            });
+            document.getElementById('top10Content').innerHTML = `<table><thead><tr><th>Rank</th><th>Name</th><th>Qual</th><th>Score</th><th>Skills</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
+            document.getElementById('top10Modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('top10Modal').style.display = 'none';
+        }
+
+        async function exportCompany(company) {
+            if (confirm(`📥 Export Top 10 for ${company}?`))
+                window.location.href = `/api/admin/export_csv/${company}`;
+        }
+
+        async function exportAllCompanies() {
+            if (!confirm('📥 Export ALL companies (10 tabs)?')) return;
+            ['Google','Microsoft','Amazon','TCS','Infosys','Thoughtworks','Meta','Apple','Salesforce','Adobe'].forEach(c =>
+                window.open(`/api/admin/export_csv/${c}`)
+            );
+            showToast('✅ Export started');
+        }
+
+        function logout() {
+            window.location.href = '/admin/logout';
+        }
+
+        window.onload = loadDashboard;
+    </script>
+</body>
+</html>
