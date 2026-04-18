@@ -14,7 +14,7 @@ from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 app.static_folder = 'static'
-app.secret_key = 'resume_screening_2026_super_secret_key_12345'
+app.secret_key = os.environ.get('SECRET_KEY', 'resume_screening_2026_super_secret_key_12345')
 
 # ========== FOLDERS SETUP ==========
 UPLOAD_FOLDER = 'static/uploads'
@@ -53,7 +53,7 @@ COMPANY_DATA = [
         "salary": "₹30-80 LPA", "role": "Software Engineer, AI/ML", "batch": "2026", "last_date": "2026-03-30"
     },
     {
-        "id": 2, "name": "Microsoft", "logo": "MS", "industry": "Cloud, AI, Enterprise",
+
         "skills": ["C#", "Python", "Azure", "SQL", "Power BI", ".NET Core", "System Design", "DSA", "Data Governance"],
         "salary": "₹30-80 LPA", "role": "SDE, Technology Consulting", "batch": "2026", "last_date": "2026-04-15"
     },
@@ -100,9 +100,9 @@ COMPANY_DATA = [
 ]
 
 # ========== STEP 2: EMAIL SEND FUNCTION ==========
-# 🔴 YAHAN APNA GMAIL DALO
-SENDER_EMAIL ="mohitnjatt1122@gmail.com"  # ✅ APNA EMAIL
-SENDER_PASSWORD = "nvkn lbrt hxqx umqx"  # ✅ APP PASSWORD (16 digit)
+# Email credentials - set as environment variables on hosting
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'mohitnjatt1122@gmail.com')
+SENDER_PASSWORD = os.environ.get('SENDER_PASSWORD', 'nvkn lbrt hxqx umqx')
 
 def send_status_email(applicant, status):
     """Candidate ko status update ki email bhejo"""
@@ -117,9 +117,9 @@ def send_status_email(applicant, status):
             
             You have been SHORTLISTED for {applicant['company']} (Batch 2026).
             
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           
             📊 YOUR APPLICATION SUMMARY:
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            
             🏢 Company    : {applicant['company']}
             📈 Match Score: {applicant['score']}%
             ✅ Skills Matched: {', '.join(applicant['matched_skills'][:5])}
@@ -145,14 +145,14 @@ def send_status_email(applicant, status):
             
             You have been SELECTED for {applicant['company']}!
             
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          
             📊 YOUR ACHIEVEMENT:
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            
             🏢 Company    : {applicant['company']}
             📈 Match Score: {applicant['score']}%
             ✅ Skills: {', '.join(applicant['matched_skills'][:5])}
             
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           
             📧 Offer letter will be sent to your email soon!
             
             Best regards,
@@ -166,9 +166,9 @@ def send_status_email(applicant, status):
             
             Thank you for applying to {applicant['company']}.
             
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           
             📊 APPLICATION STATUS:
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            
             🏢 Company    : {applicant['company']}
             📈 Match Score: {applicant['score']}%
             ❌ Status     : Not Selected this time
@@ -449,7 +449,7 @@ def extract_text_from_pdf(pdf_path):
                 text += page.extract_text() + " "
         return text.lower()
     except Exception as e:
-        print(f"❌ PDF Error: {e}")
+        print(f" PDF Error: {e}")
         return ""
 
 # ========== SKILL EXTRACTOR ==========
@@ -484,6 +484,9 @@ def extract_skills_from_text(text):
                 found_skills.append(skill)
     
     return list(set(found_skills))
+
+
+# main code: skill match calculation
 
 # ========== MATCH SCORE CALCULATOR ==========
 def calculate_match_score(resume_skills, company_name):
@@ -538,7 +541,7 @@ def submit_application():
         score, matched_skills, missing_skills = calculate_match_score(resume_skills, company)
         print(f"📊 Match Score: {score}%")
         print(f"✅ Matched Skills: {matched_skills[:5]}")
-        print(f"❌ Missing Skills: {missing_skills[:5]}")
+        print(f" Missing Skills: {missing_skills[:5]}")
         
         applicant = {
             'id': timestamp,
@@ -579,7 +582,7 @@ def submit_application():
         })
         
     except Exception as e:
-        print(f"❌ ERROR: {str(e)}")
+        print(f" ERROR: {str(e)}")
         return jsonify({
             'success': False,
             'message': f'Error: {str(e)}'
@@ -592,7 +595,7 @@ def api_companies():
 
 if __name__ == '__main__':
     print("\n" + "="*80)
-    print("🚀 AI RESUME SCREENING SYSTEM 2026 - READY!")
+    print(" AI RESUME SCREENING SYSTEM 2026 - READY!")
     print("="*80)
     print("🏢 Companies: 10 Top Tech Companies Loaded")
     print("📍 Home Page: http://localhost:5000")
@@ -616,13 +619,16 @@ if __name__ == '__main__':
     print(f"   • {COMPANIES_FILE}")
     print(f"   • {ADMIN_FILE}")
     print("="*80 + "\n")
-    
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    
-    print("\n" + "="*60)
-    print("📱 SHARE THIS LINK WITH FRIENDS:")
-    print(f"🔗 http://{ip_address}:5000")
-    print("="*60)
-    
-    app.run(debug=True, host='0.0.0.0', port=5000)
+
+    try:
+        hostname = socket.gethostname()
+        ip_address = socket.gethostbyname(hostname)
+        print("\n" + "="*60)
+        print("📱 SHARE THIS LINK WITH FRIENDS:")
+        print(f" http://{ip_address}:5000")
+        print("="*60)
+    except Exception:
+        pass
+
+    debug_mode = os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'
+    app.run(debug=debug_mode, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
