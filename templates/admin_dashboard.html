@@ -497,17 +497,50 @@
     </div>
 
     <script>
+        // ===== TOAST NOTIFICATIONS =====
         function showToast(msg, isErr = false) {
             let t = document.createElement('div');
             t.className = 'toast-message' + (isErr ? ' toast-error' : '');
             t.innerText = msg;
             document.body.appendChild(t);
-            setTimeout(() => t.remove(), 3000);
+            setTimeout(() => t.remove(), 4000);
+        }
+
+        // ===== TIMEOUT-SAFE FETCH (Render free tier ke liye) =====
+        async function fetchSafe(url, opts = {}, ms = 20000) {
+            const ctrl = new AbortController();
+            const t = setTimeout(() => ctrl.abort(), ms);
+            try {
+                const r = await fetch(url, { ...opts, signal: ctrl.signal });
+                clearTimeout(t);
+                return r;
+            } catch(e) { clearTimeout(t); throw e; }
+        }
+
+        function spinnerHTML(msg) {
+            return `<div style="text-align:center;padding:40px;color:#aaa;grid-column:1/-1;">
+                <div style="width:48px;height:48px;border:4px solid rgba(0,210,255,0.2);border-top-color:#00d2ff;border-radius:50%;animation:dashSpin 1s linear infinite;margin:0 auto 16px;"></div>
+                <p>${msg}</p></div>`;
         }
 
         async function loadDashboard() {
+            document.getElementById('companyStats').innerHTML = spinnerHTML('Company stats load ho rahi hain...');
+            document.getElementById('totalApps').innerText = '...';
+            document.getElementById('pendingApps').innerText = '...';
+            document.getElementById('avgScore').innerText = '...';
+
             try {
-                let stats = await (await fetch('/api/admin/stats')).json();
+                const res = await fetchSafe('/api/admin/stats', {}, 25000);
+                if (res.status === 401) { window.location.href='/admin'; return; }
+                let stats = await res.json();
+                if (stats.error) {
+                    document.getElementById('companyStats').innerHTML =
+                        `<div style="text-align:center;padding:30px;color:#f56565;grid-column:1/-1;">
+                            <p>&#10060; ${stats.error}</p>
+                            <button onclick="loadDashboard()" style="margin-top:15px;padding:10px 25px;background:#00d2ff;color:black;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">&#128260; Retry</button>
+                        </div>`;
+                    return;
+                }
                 document.getElementById('totalApps').innerText = stats.total_applications || 0;
                 document.getElementById('totalCompanies').innerText = stats.total_companies || 10;
                 document.getElementById('pendingApps').innerText = stats.pending_review || 0;
@@ -516,20 +549,32 @@
                 let companies = ['Google','Microsoft','Amazon','TCS','Infosys','Thoughtworks','Meta','Apple','Salesforce','Adobe'];
                 let html = '';
                 companies.forEach(c => {
-                    let cs = stats.company_wise?.[c] || { total:0, avg_score:0, top_score:0 };
+                    let cs = (stats.company_wise && stats.company_wise[c])
+                        ? stats.company_wise[c] : {total:0, avg_score:0, top_score:0};
+                    let scoreCol = cs.top_score >= 70 ? '#48bb78' : cs.top_score >= 40 ? '#f6ad55' : '#aaa';
                     html += `<div class="company-stat-card">
                         <h4>${c}</h4>
-                        <div><span>📄 Apps:</span> <span style="color:#00d2ff;">${cs.total}</span></div>
-                        <div><span>📊 Avg:</span> <span style="color:#48bb78;">${cs.avg_score}%</span></div>
-                        <div><span>🏆 Top:</span> <span style="color:#ffd700;">${cs.top_score}%</span></div>
-                        <button class="top10-btn" onclick="showTop10('${c}')">👁️ View Top 10</button>
-                        <button class="export-btn" onclick="exportCompany('${c}')">📥 Export CSV</button>
+                        <div style="margin:10px 0;"><span>&#128196; Applications:</span> <span style="color:#00d2ff;font-weight:bold;font-size:22px;">${cs.total}</span></div>
+                        <div style="margin:8px 0;"><span>&#128202; Avg Score:</span> <span style="color:#48bb78;font-weight:bold;">${cs.avg_score}%</span></div>
+                        <div style="margin:8px 0;"><span>&#127942; Top Score:</span> <span style="color:${scoreCol};font-weight:bold;">${cs.top_score}%</span></div>
+                        <button class="top10-btn" onclick="showTop10('${c}')">&#128065;&#65039; View Top 10</button>
+                        <button class="export-btn" onclick="exportCompany('${c}')">&#128229; Export CSV</button>
                     </div>`;
                 });
                 document.getElementById('companyStats').innerHTML = html;
                 loadApplicants();
             } catch(e) {
-                showToast('❌ Error loading dashboard', true);
+                let msg = e.name === 'AbortError'
+                    ? 'Server slow hai (Render wake-up) — 1-2 min baad try karo'
+                    : 'Dashboard load nahi hua: ' + e.message;
+                document.getElementById('companyStats').innerHTML =
+                    `<div style="text-align:center;padding:30px;color:#f6ad55;grid-column:1/-1;">
+                        <p style="font-size:18px;">&#9888;&#65039; ${msg}</p>
+                        <button onclick="loadDashboard()" style="margin-top:15px;padding:12px 30px;background:linear-gradient(45deg,#00d2ff,#a855f7);color:white;border:none;border-radius:25px;cursor:pointer;font-weight:bold;font-size:16px;">&#128260; Dobara Try Karo</button>
+                    </div>`;
+                document.getElementById('totalApps').innerText = '-';
+                document.getElementById('pendingApps').innerText = '-';
+                document.getElementById('avgScore').innerText = '-';
             }
         }
 
@@ -542,11 +587,19 @@
             if (status) url += `status=${status}&`;
             if (min && min != '0') url += `min_score=${min}`;
 
+            document.getElementById('applicantsBody').innerHTML =
+                `<tr><td colspan="11" style="text-align:center;padding:30px;">${spinnerHTML('Applicants load ho rahe hain...')}</td></tr>`;
+
             try {
-                let apps = await (await fetch(url)).json();
+                const res = await fetchSafe(url, {}, 15000);
+                if (res.status === 401) { window.location.href='/admin'; return; }
+                let apps = await res.json();
                 let rows = '';
-                if (!apps.length) {
-                    rows = '<tr><td colspan="11" style="text-align:center;">📌 No applicants found</td></tr>';
+                if (!Array.isArray(apps) || !apps.length) {
+                    let filterActive = company || status || (min && min!='0');
+                    rows = `<tr><td colspan="11" style="text-align:center;padding:30px;color:#aaa;">
+                        ${filterActive ? '&#128204; Ye filters match nahi kiye &mdash; upar All select karo' : '&#128204; Koi application abhi nahi aayi'}
+                    </td></tr>`;
                 } else {
                     apps.forEach((app, idx) => {
                         let statusClass = {
@@ -578,24 +631,24 @@
                 }
                 document.getElementById('applicantsBody').innerHTML = rows;
             } catch(e) {
-                document.getElementById('applicantsBody').innerHTML = '<tr><td colspan="11" style="color:red;">❌ Error loading data</td></tr>';
+                let msg = e.name === 'AbortError' ? 'Timeout &#8212; Server slow hai' : 'Data load nahi hua';
+                document.getElementById('applicantsBody').innerHTML =
+                    `<tr><td colspan="11" style="text-align:center;color:#f56565;padding:20px;">
+                        &#9888;&#65039; ${msg}
+                        <button onclick="loadApplicants()" style="margin-left:10px;padding:6px 18px;background:#00d2ff;color:black;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">&#128260; Retry</button>
+                    </td></tr>`;
             }
         }
 
         async function updateStatus(id, status) {
             try {
-                let res = await (await fetch('/api/admin/update_status', {
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
+                let res = await (await fetchSafe('/api/admin/update_status', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
                     body:JSON.stringify({id, status})
-                })).json();
-                if (res.success) {
-                    showToast(`✅ Status → ${status}`);
-                    loadDashboard();
-                }
-            } catch(e) {
-                showToast('❌ Update failed', true);
-            }
+                }, 10000)).json();
+                if (res.success) { showToast('Status: ' + status + ' | Email bheja'); loadDashboard(); }
+                else showToast('Update nahi hua', true);
+            } catch(e) { showToast('Connection error', true); }
         }
 
         // ===== VIEW RESUME FUNCTION =====
@@ -608,65 +661,65 @@
             window.open(url, '_blank');
         }
 
-        // ===== NEW DELETE FUNCTION =====
         async function deleteApplicant(id) {
-            if (!confirm('🗑️ Permanently delete this applicant?')) return;
+            if (!confirm('Is applicant ko permanently delete karo?')) return;
             try {
-                let res = await (await fetch('/api/admin/delete_applicant', {
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
+                let res = await (await fetchSafe('/api/admin/delete_applicant', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
                     body:JSON.stringify({id})
-                })).json();
-                if (res.success) {
-                    showToast('🗑️ Applicant deleted');
-                    loadDashboard();
-                } else {
-                    showToast('❌ Delete failed', true);
-                }
-            } catch(e) {
-                showToast('❌ Delete error', true);
-            }
+                }, 10000)).json();
+                if (res.success) { showToast('Applicant delete ho gaya'); loadDashboard(); }
+                else showToast('Delete nahi hua', true);
+            } catch(e) { showToast('Delete error', true); }
         }
 
         async function showTop10(company) {
-            let apps = await (await fetch(`/api/admin/top10/${company}`)).json();
-            if (!apps.length) return showToast(`📌 No apps for ${company}`, true);
-            document.getElementById('modalCompanyName').innerText = `🏆 Top 10 - ${company}`;
+            try {
+                let apps = await (await fetchSafe(`/api/admin/top10/${company}`, {}, 15000)).json();
+                if (!apps.length) return showToast(company + ' ke liye koi applicant nahi', true);
+                document.getElementById('modalCompanyName').innerText = 'Top 10 - ' + company;
             let rows = '';
             apps.forEach((app,i) => {
                 rows += `<tr>
                     <td>#${i+1}</td>
                     <td>${app.name}</td>
+                    <td><a href="mailto:${app.email}" style="color:#00d2ff;">&#128231; ${app.email||'N/A'}</a></td>
                     <td>${app.qualification || 'N/A'}</td>
                     <td><span class="score-badge">${app.score}%</span></td>
                     <td>${(app.matched_skills || []).slice(0,4).join(', ')}</td>
                     <td><span class="status-badge status-${(app.status||'Pending').toLowerCase()}">${app.status||'Pending'}</span></td>
                 </tr>`;
             });
-            document.getElementById('top10Content').innerHTML = `<table><thead><tr><th>Rank</th><th>Name</th><th>Qual</th><th>Score</th><th>Skills</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
-            document.getElementById('top10Modal').style.display = 'flex';
+                document.getElementById('top10Content').innerHTML = `<table><thead><tr><th>Rank</th><th>Name</th><th>Email</th><th>Qual</th><th>Score</th><th>Skills</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
+                document.getElementById('top10Modal').style.display = 'flex';
+            } catch(e) { showToast('Data load nahi hua', true); }
         }
 
-        function closeModal() {
-            document.getElementById('top10Modal').style.display = 'none';
+        function viewResume(resumeFile) {
+            if (!resumeFile) { showToast('Resume upload nahi hua', true); return; }
+            window.open('/static/uploads/' + resumeFile, '_blank');
         }
+
+        function closeModal() { document.getElementById('top10Modal').style.display = 'none'; }
 
         async function exportCompany(company) {
-            if (confirm(`📥 Export Top 10 for ${company}?`))
+            if (confirm(company + ' ka Top 10 export karo?'))
                 window.location.href = `/api/admin/export_csv/${company}`;
         }
 
         async function exportAllCompanies() {
-            if (!confirm('📥 Export ALL companies (10 tabs)?')) return;
+            if (!confirm('Saari companies ka CSV export karo?')) return;
             ['Google','Microsoft','Amazon','TCS','Infosys','Thoughtworks','Meta','Apple','Salesforce','Adobe'].forEach(c =>
-                window.open(`/api/admin/export_csv/${c}`)
-            );
-            showToast('✅ Export started');
+                window.open(`/api/admin/export_csv/${c}`));
+            showToast('Export shuru ho gaya');
         }
 
-        function logout() {
-            window.location.href = '/admin/logout';
-        }
+        function logout() { window.location.href = '/admin/logout'; }
+
+        // Spin animation for loading spinner
+        const s = document.createElement('style');
+        s.textContent = '@keyframes dashSpin { to { transform: rotate(360deg); } }';
+        document.head.appendChild(s);
 
         window.onload = loadDashboard;
     </script>
