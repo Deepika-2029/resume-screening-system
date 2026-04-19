@@ -568,20 +568,32 @@
                 if (res.status === 401) { window.location.href='/admin'; return; }
                 let stats = await safeJSON(res);
                 if (!stats) return;
-                // Agar HTML mila (session expire / server restart)
+                // Agar HTML mila (server restart / Render error page)
                 if (stats._html_error) {
                     stopCountdown();
-                    document.getElementById('companyStats').innerHTML =
-                        `<div style="text-align:center;padding:30px;color:#f6ad55;grid-column:1/-1;">
-                            <p style="font-size:18px;">&#128274; Session expire ho gayi!</p>
-                            <p style="color:#aaa;margin:10px 0;">Dobara login karo</p>
-                            <a href="/admin" style="display:inline-block;margin-top:12px;padding:12px 30px;background:linear-gradient(45deg,#00d2ff,#a855f7);color:white;border-radius:25px;text-decoration:none;font-weight:bold;">&#128274; Login Karo</a>
-                        </div>`;
+                    let retryCount = 0;
+                    function showRetryBox(sec) {
+                        document.getElementById('companyStats').innerHTML =
+                            `<div style="text-align:center;padding:30px;color:#f6ad55;grid-column:1/-1;">
+                                <p style="font-size:20px;">&#9203; Server wake-up ho raha hai...</p>
+                                <p style="color:#aaa;margin:10px 0;font-size:14px;">Render free server restart ke baad 1-2 min leta hai</p>
+                                <p id="autoRetryMsg" style="color:#00d2ff;font-size:14px;margin:10px 0;">${sec > 0 ? sec + ' second mein auto-retry...' : 'Retry ho raha hai...'}</p>
+                                <button onclick="loadDashboard()" style="margin-top:10px;padding:10px 25px;background:linear-gradient(45deg,#00d2ff,#a855f7);color:white;border:none;border-radius:25px;cursor:pointer;font-weight:bold;">&#128260; Abhi Retry Karo</button>
+                            </div>`;
+                    }
+                    showRetryBox(8);
+                    let sec = 8;
+                    let autoTimer = setInterval(() => {
+                        sec--;
+                        const el = document.getElementById('autoRetryMsg');
+                        if (el) el.textContent = sec > 0 ? sec + ' second mein auto-retry...' : 'Retry ho raha hai...';
+                        if (sec <= 0) { clearInterval(autoTimer); loadDashboard(); }
+                    }, 1000);
                     document.getElementById('totalApps').innerText = '-';
                     document.getElementById('pendingApps').innerText = '-';
                     document.getElementById('avgScore').innerText = '-';
                     return;
-                } // session expired, redirect ho gaya
+                }
                 if (stats.error) {
                     document.getElementById('companyStats').innerHTML =
                         `<div style="text-align:center;padding:30px;color:#f56565;grid-column:1/-1;">
