@@ -506,8 +506,8 @@
             setTimeout(() => t.remove(), 4000);
         }
 
-        // ===== TIMEOUT-SAFE FETCH with JSON check =====
-        async function fetchSafe(url, opts = {}, ms = 20000) {
+        // ===== TIMEOUT-SAFE FETCH (60 second timeout) =====
+        async function fetchSafe(url, opts = {}, ms = 60000) {
             const ctrl = new AbortController();
             const t = setTimeout(() => ctrl.abort(), ms);
             try {
@@ -517,34 +517,71 @@
             } catch(e) { clearTimeout(t); throw e; }
         }
 
-        // JSON parse karo safely — agar HTML mila to session expired
+        // JSON safely parse karo — redirect loop se bachao
         async function safeJSON(res) {
-            const ct = res.headers.get('content-type') || '';
-            if (!ct.includes('application/json')) {
-                // Server ne HTML bheja = session expire ya login redirect
-                window.location.href = '/admin';
-                return null;
+            const text = await res.text();  // pehle text lo
+            try {
+                return JSON.parse(text);    // JSON parse try karo
+            } catch(e) {
+                // Server ne HTML bheja (session expire / server restart)
+                console.warn('Non-JSON response:', text.substring(0, 100));
+                return { _html_error: true };
             }
-            return await res.json();
         }
 
-        function spinnerHTML(msg) {
+        let countdownInterval = null;
+
+        function spinnerHTML(msg, showCountdown = false) {
+            let countdownId = showCountdown ? 'loadCountdown' : '';
             return `<div style="text-align:center;padding:40px;color:#aaa;grid-column:1/-1;">
                 <div style="width:48px;height:48px;border:4px solid rgba(0,210,255,0.2);border-top-color:#00d2ff;border-radius:50%;animation:dashSpin 1s linear infinite;margin:0 auto 16px;"></div>
-                <p>${msg}</p></div>`;
+                <p>${msg}</p>
+                ${showCountdown ? '<p id="loadCountdown" style="color:#00d2ff;font-size:13px;margin-top:8px;">Server wake-up ho raha hai...</p>' : ''}
+            </div>`;
+        }
+
+        function startCountdown(elementId, maxSec) {
+            if (countdownInterval) clearInterval(countdownInterval);
+            let elapsed = 0;
+            countdownInterval = setInterval(() => {
+                elapsed++;
+                const el = document.getElementById(elementId);
+                if (!el) { clearInterval(countdownInterval); return; }
+                el.textContent = `${elapsed}s / ${maxSec}s — Server wake-up ho raha hai, wait karo...`;
+            }, 1000);
+        }
+
+        function stopCountdown() {
+            if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
         }
 
         async function loadDashboard() {
-            document.getElementById('companyStats').innerHTML = spinnerHTML('Company stats load ho rahi hain...');
+            document.getElementById('companyStats').innerHTML = spinnerHTML('Server se data mangwa rahe hain...', true);
             document.getElementById('totalApps').innerText = '...';
             document.getElementById('pendingApps').innerText = '...';
             document.getElementById('avgScore').innerText = '...';
+            startCountdown('loadCountdown', 60);
 
             try {
-                const res = await fetchSafe('/api/admin/stats', {}, 25000);
+                const res = await fetchSafe('/api/admin/stats', {}, 60000);
+                stopCountdown();
                 if (res.status === 401) { window.location.href='/admin'; return; }
                 let stats = await safeJSON(res);
-                if (!stats) return; // session expired, redirect ho gaya
+                if (!stats) return;
+                // Agar HTML mila (session expire / server restart)
+                if (stats._html_error) {
+                    stopCountdown();
+                    document.getElementById('companyStats').innerHTML =
+                        `<div style="text-align:center;padding:30px;color:#f6ad55;grid-column:1/-1;">
+                            <p style="font-size:18px;">&#128274; Session expire ho gayi!</p>
+                            <p style="color:#aaa;margin:10px 0;">Dobara login karo</p>
+                            <a href="/admin" style="display:inline-block;margin-top:12px;padding:12px 30px;background:linear-gradient(45deg,#00d2ff,#a855f7);color:white;border-radius:25px;text-decoration:none;font-weight:bold;">&#128274; Login Karo</a>
+                        </div>`;
+                    document.getElementById('totalApps').innerText = '-';
+                    document.getElementById('pendingApps').innerText = '-';
+                    document.getElementById('avgScore').innerText = '-';
+                    return;
+                } // session expired, redirect ho gaya
                 if (stats.error) {
                     document.getElementById('companyStats').innerHTML =
                         `<div style="text-align:center;padding:30px;color:#f56565;grid-column:1/-1;">
@@ -576,12 +613,14 @@
                 document.getElementById('companyStats').innerHTML = html;
                 loadApplicants();
             } catch(e) {
+                stopCountdown();
                 let msg = e.name === 'AbortError'
-                    ? 'Server slow hai (Render wake-up) — 1-2 min baad try karo'
-                    : 'Dashboard load nahi hua: ' + e.message;
+                    ? 'Server 60 sec mein respond nahi kiya — thodi der baad try karo'
+                    : 'Connection error: ' + e.message;
                 document.getElementById('companyStats').innerHTML =
                     `<div style="text-align:center;padding:30px;color:#f6ad55;grid-column:1/-1;">
                         <p style="font-size:18px;">&#9888;&#65039; ${msg}</p>
+                        <p style="color:#aaa;font-size:13px;margin-top:8px;">Render free server sleep ke baad 1-2 min leta hai</p>
                         <button onclick="loadDashboard()" style="margin-top:15px;padding:12px 30px;background:linear-gradient(45deg,#00d2ff,#a855f7);color:white;border:none;border-radius:25px;cursor:pointer;font-weight:bold;font-size:16px;">&#128260; Dobara Try Karo</button>
                     </div>`;
                 document.getElementById('totalApps').innerText = '-';
