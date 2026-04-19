@@ -54,7 +54,7 @@ COMPANY_DATA = [
         "salary": "₹30-80 LPA", "role": "Software Engineer, AI/ML", "batch": "2026", "last_date": "2026-03-30"
     },
     {
-
+        "id": 2, "name": "Microsoft", "logo": "MS", "industry": "Cloud, AI, Enterprise",
         "skills": ["C#", "Python", "Azure", "SQL", "Power BI", ".NET Core", "System Design", "DSA", "Data Governance"],
         "salary": "₹30-80 LPA", "role": "SDE, Technology Consulting", "batch": "2026", "last_date": "2026-04-15"
     },
