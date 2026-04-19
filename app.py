@@ -286,8 +286,14 @@ def api_admin_stats():
     if not session.get('admin_logged_in'):
         return jsonify({'error': 'Unauthorized'}), 401
     
-    with open(APPLICANTS_FILE, 'r') as f:
-        applicants = json.load(f)
+    try:
+        with open(APPLICANTS_FILE, 'r') as f:
+            applicants = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        applicants = []
+        # File missing hai to create karo
+        with open(APPLICANTS_FILE, 'w') as f:
+            json.dump([], f)
     
     stats = {
         'total_applications': len(applicants),
