@@ -15,6 +15,7 @@ from email.mime.multipart import MIMEMultipart
 app = Flask(__name__)
 app.static_folder = 'static'
 app.secret_key = os.environ.get('SECRET_KEY', 'resume_screening_2026_super_secret_key_12345')
+app.config['PERMANENT_SESSION_LIFETIME'] = __import__('datetime').timedelta(days=7)
 
 # ========== FOLDERS SETUP ==========
 UPLOAD_FOLDER = 'static/uploads'
@@ -232,6 +233,7 @@ def admin_login():
         admin = json.load(f)
     
     if username == admin['username'] and password == admin['password']:
+        session.permanent = True  # 7 din tak session rahegi
         session['admin_logged_in'] = True
         session['admin_username'] = username
         return jsonify({'success': True, 'message': 'Login successful!'})
